@@ -1,0 +1,127 @@
+0000000000005360 <rust_linz::main>:
+# Make room on the stack for local variables.
+    5360:	48 81 ec e8 00 00 00 	sub    $0xe8,%rsp
+
+# Call SystemTime::now() for the first time. Store the result in 'before'
+    5367:	ff 15 b3 0b 04 00    	callq  *0x40bb3(%rip)        # 45f20 <_GLOBAL_OFFSET_TABLE_+0x5a0>
+; Store the result.
+    536d:	48 89 84 24 c8 00 00 	mov    %rax,0xc8(%rsp)
+    5374:	00 
+    5375:	48 89 94 24 d0 00 00 	mov    %rdx,0xd0(%rsp)
+    537c:	00 
+    537d:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+    5382:	48 89 54 24 28       	mov    %rdx,0x28(%rsp)
+    5387:	48 c7 84 24 d8 00 00 	movq   $0x1dcd6500,0xd8(%rsp)
+    538e:	00 00 65 cd 1d 
+    5393:	48 c7 44 24 38 00 00 	movq   $0x0,0x38(%rsp)
+    539a:	00 00 
+
+# Top of the loop
+
+# Compare the current value of the iterator (0x38(%rsp)) with the upper bound.
+    539c:	48 81 7c 24 38 00 65 	cmpq   $0x1dcd6500,0x38(%rsp)
+    53a3:	cd 1d 
+# If we need to do another iteration of the loop, jmp LOOPBODY
+    53a5:	72 15                	jb     53bc <rust_linz::main+0x5c>
+# Otherwise, call SystemTime::now() for the second time and store the result
+# in 'after'
+    53a7:	48 8d 05 52 2b 01 00 	lea    0x12b52(%rip),%rax        # 17f00 <std::time::SystemTime::now>
+    53ae:	ff d0                	callq  *%rax
+    53b0:	48 89 54 24 48       	mov    %rdx,0x48(%rsp)
+    53b5:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+    53ba:	eb 2d                	jmp    53e9 <rust_linz::main+0x89>
+
+
+# LOOPBODY: Call the function to time!
+    53bc:	e8 8f ff ff ff       	callq  5350 <rust_linz::some_function_to_time>
+
+# Pull the current value of the iterator from memory into a register
+    53c1:	48 8b 44 24 38       	mov    0x38(%rsp),%rax
+# Increment it.
+    53c6:	48 05 01 00 00 00    	add    $0x1,%rax
+# Check for overflow
+    53cc:	0f 92 c1             	setb   %cl
+    53cf:	f6 c1 01             	test   $0x1,%cl
+    53d2:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+    53d7:	0f 85 f5 00 00 00    	jne    54d2 <rust_linz::main+0x172>
+# If there's no overflow, store the current value of the iterator
+# back into memory and jump to the top of the loop.
+    53dd:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+    53e2:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+    53e7:	eb b3                	jmp    539c <rust_linz::main+0x3c>
+
+# We have now left the loop!
+
+# Subtract before and after, call expect() and convert the result
+# to seconds.
+    53e9:	48 8d 7c 24 68       	lea    0x68(%rsp),%rdi
+    53ee:	48 8d 74 24 40       	lea    0x40(%rsp),%rsi
+    53f3:	48 8b 54 24 30       	mov    0x30(%rsp),%rdx
+    53f8:	48 8b 4c 24 28       	mov    0x28(%rsp),%rcx
+    53fd:	ff 15 7d 07 04 00    	callq  *0x4077d(%rip)        # 45b80 <_GLOBAL_OFFSET_TABLE_+0x200>
+    5403:	48 8d 35 22 0c 03 00 	lea    0x30c22(%rip),%rsi        # 3602c <str.0+0x1c>
+    540a:	48 8d 0d ff e0 03 00 	lea    0x3e0ff(%rip),%rcx        # 43510 <__do_global_dtors_aux_fini_array_entry+0x40>
+    5411:	48 8d 7c 24 68       	lea    0x68(%rsp),%rdi
+    5416:	ba 02 00 00 00       	mov    $0x2,%edx
+    541b:	e8 d0 fd ff ff       	callq  51f0 <core::result::Result<T,E>::expect>
+    5420:	89 54 24 60          	mov    %edx,0x60(%rsp)
+    5424:	48 89 44 24 58       	mov    %rax,0x58(%rsp)
+    5429:	48 8d 7c 24 58       	lea    0x58(%rsp),%rdi
+    542e:	e8 1d 02 00 00       	callq  5650 <core::time::Duration::as_secs>
+    5433:	48 89 44 24 50       	mov    %rax,0x50(%rsp)
+
+# Print the results to the screen
+    5438:	48 8d 35 a1 f3 02 00 	lea    0x2f3a1(%rip),%rsi        # 347e0 <core::fmt::num::imp::<impl core::fmt::Display for u64>::fmt>
+    543f:	48 8d 44 24 50       	lea    0x50(%rsp),%rax
+    5444:	48 89 84 24 c0 00 00 	mov    %rax,0xc0(%rsp)
+    544b:	00 
+    544c:	48 8b 84 24 c0 00 00 	mov    0xc0(%rsp),%rax
+    5453:	00 
+    5454:	48 89 84 24 e0 00 00 	mov    %rax,0xe0(%rsp)
+    545b:	00 
+    545c:	48 89 c7             	mov    %rax,%rdi
+    545f:	e8 bc 00 00 00       	callq  5520 <core::fmt::ArgumentV1::new>
+    5464:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+    5469:	48 89 54 24 10       	mov    %rdx,0x10(%rsp)
+    546e:	48 8d 05 b3 e0 03 00 	lea    0x3e0b3(%rip),%rax        # 43528 <__do_global_dtors_aux_fini_array_entry+0x58>
+    5475:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+    547a:	48 89 8c 24 b0 00 00 	mov    %rcx,0xb0(%rsp)
+    5481:	00 
+    5482:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+    5487:	48 89 94 24 b8 00 00 	mov    %rdx,0xb8(%rsp)
+    548e:	00 
+    548f:	48 8d b4 24 b0 00 00 	lea    0xb0(%rsp),%rsi
+    5496:	00 
+    5497:	48 8d bc 24 80 00 00 	lea    0x80(%rsp),%rdi
+    549e:	00 
+    549f:	48 89 74 24 08       	mov    %rsi,0x8(%rsp)
+    54a4:	48 89 c6             	mov    %rax,%rsi
+    54a7:	ba 02 00 00 00       	mov    $0x2,%edx
+    54ac:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+    54b1:	41 b8 01 00 00 00    	mov    $0x1,%r8d
+    54b7:	e8 a4 fc ff ff       	callq  5160 <core::fmt::Arguments::new_v1>
+    54bc:	48 8d bc 24 80 00 00 	lea    0x80(%rsp),%rdi
+    54c3:	00 
+    54c4:	ff 15 fe 04 04 00    	callq  *0x404fe(%rip)        # 459c8 <_GLOBAL_OFFSET_TABLE_+0x48>
+    54ca:	48 81 c4 e8 00 00 00 	add    $0xe8,%rsp
+    54d1:	c3                   	retq   
+    54d2:	48 8d 3d 37 0b 03 00 	lea    0x30b37(%rip),%rdi        # 36010 <str.0>
+    54d9:	48 8d 15 18 e0 03 00 	lea    0x3e018(%rip),%rdx        # 434f8 <__do_global_dtors_aux_fini_array_entry+0x28>
+    54e0:	48 8d 05 19 a6 02 00 	lea    0x2a619(%rip),%rax        # 2fb00 <core::panicking::panic>
+    54e7:	be 1c 00 00 00       	mov    $0x1c,%esi
+    54ec:	ff d0                	callq  *%rax
+    54ee:	0f 0b                	ud2    
+
+00000000000054f0 <main>:
+    54f0:	48 83 ec 18          	sub    $0x18,%rsp
+    54f4:	8a 05 73 57 03 00    	mov    0x35773(%rip),%al        # 3ac6d <__rustc_debug_gdb_scripts_section__>
+    54fa:	48 63 cf             	movslq %edi,%rcx
+    54fd:	48 8d 3d 5c fe ff ff 	lea    -0x1a4(%rip),%rdi        # 5360 <rust_linz::main>
+    5504:	48 89 74 24 10       	mov    %rsi,0x10(%rsp)
+    5509:	48 89 ce             	mov    %rcx,%rsi
+    550c:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+    5511:	88 44 24 0f          	mov    %al,0xf(%rsp)
+    5515:	e8 66 00 00 00       	callq  5580 <std::rt::lang_start>
+    551a:	48 83 c4 18          	add    $0x18,%rsp
+    551e:	c3                   	retq   
+    551f:	90                   	nop

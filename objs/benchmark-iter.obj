@@ -1,0 +1,121 @@
+00000000000057e0 <rust_linz::main>:
+# Make space on the stack for the local variables.
+    57e0:	48 81 ec 28 01 00 00 	sub    $0x128,%rsp
+# Initialize 'x'
+    57e7:	48 c7 84 24 f8 00 00 	movq   $0x1dcd6500,0xf8(%rsp)
+    57ee:	00 00 65 cd 1d 
+# Call SystemTime::now() for the first time and store the result in 'before'
+    57f3:	ff 15 2f 07 04 00    	callq  *0x4072f(%rip)        # 45f28 <_GLOBAL_OFFSET_TABLE_+0x5a0>
+    57f9:	48 89 84 24 00 01 00 	mov    %rax,0x100(%rsp)
+    5800:	00 
+    5801:	48 89 94 24 08 01 00 	mov    %rdx,0x108(%rsp)
+    5808:	00 
+    5809:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+    580e:	48 89 54 24 30       	mov    %rdx,0x30(%rsp)
+
+# Make an iterator from 0..500000000
+    5813:	48 c7 44 24 40 00 00 	movq   $0x0,0x40(%rsp)
+    581a:	00 00 
+    581c:	48 c7 44 24 48 00 65 	movq   $0x1dcd6500,0x48(%rsp)
+    5823:	cd 1d 
+    5825:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+    582a:	48 8b 74 24 48       	mov    0x48(%rsp),%rsi
+    582f:	e8 1c 03 00 00       	callq  5b50 <<I as core::iter::traits::collect::IntoIterator>::into_iter>
+    5834:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+    5839:	48 89 54 24 20       	mov    %rdx,0x20(%rsp)
+    583e:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    5843:	48 89 44 24 50       	mov    %rax,0x50(%rsp)
+    5848:	48 8b 4c 24 20       	mov    0x20(%rsp),%rcx
+    584d:	48 89 4c 24 58       	mov    %rcx,0x58(%rsp)
+
+# Top of the loop
+    5852:	48 8d 7c 24 50       	lea    0x50(%rsp),%rdi
+    5857:	e8 44 02 00 00       	callq  5aa0 <core::iter::range::<impl core::iter::traits::iterator::Iterator for core::ops::range::Range<A>>::next>
+    585c:	48 89 54 24 68       	mov    %rdx,0x68(%rsp)
+    5861:	48 89 44 24 60       	mov    %rax,0x60(%rsp)
+    5866:	48 8b 44 24 60       	mov    0x60(%rsp),%rax
+    586b:	48 85 c0             	test   %rax,%rax
+# If the next iterator is 0, we jump out of the loop to SECOND_SYSTEMTIME
+    586e:	74 04                	je     5874 <rust_linz::main+0x94>
+# Otherwise, we jump to LABEL2
+    5870:	eb 00                	jmp    5872 <rust_linz::main+0x92>
+    5872:	eb 17                	jmp    588b <rust_linz::main+0xab>
+
+# SECOND_SYSTEMTIME:
+    5874:	48 8d 05 f5 2c 01 00 	lea    0x12cf5(%rip),%rax        # 18570 <std::time::SystemTime::now>
+    587b:	ff d0                	callq  *%rax
+    587d:	48 89 54 24 78       	mov    %rdx,0x78(%rsp)
+    5882:	48 89 44 24 70       	mov    %rax,0x70(%rsp)
+# The code after the loop continues at LOOP_EXIT
+    5887:	eb 1e                	jmp    58a7 <rust_linz::main+0xc7>
+    5889:	0f 0b                	ud2    
+
+# LOOP_BODY:
+    588b:	48 8b 44 24 68       	mov    0x68(%rsp),%rax
+    5890:	48 89 84 24 10 01 00 	mov    %rax,0x110(%rsp)
+    5897:	00 
+    5898:	48 89 84 24 18 01 00 	mov    %rax,0x118(%rsp)
+    589f:	00 
+    58a0:	e8 2b ff ff ff       	callq  57d0 <rust_linz::some_function_to_time>
+# Jump back to the top of the loop
+    58a5:	eb ab                	jmp    5852 <rust_linz::main+0x72>
+
+# LOOP_EXIT: We are out of the loop
+    58a7:	48 8d bc 24 98 00 00 	lea    0x98(%rsp),%rdi
+    58ae:	00 
+    58af:	48 8d 74 24 70       	lea    0x70(%rsp),%rsi
+    58b4:	48 8b 54 24 38       	mov    0x38(%rsp),%rdx
+    58b9:	48 8b 4c 24 30       	mov    0x30(%rsp),%rcx
+    58be:	ff 15 c4 02 04 00    	callq  *0x402c4(%rip)        # 45b88 <_GLOBAL_OFFSET_TABLE_+0x200>
+    58c4:	48 8d 35 35 07 03 00 	lea    0x30735(%rip),%rsi        # 36000 <_fini+0x5ec>
+    58cb:	48 8d 0d 46 dc 03 00 	lea    0x3dc46(%rip),%rcx        # 43518 <__do_global_dtors_aux_fini_array_entry+0x28>
+    58d2:	48 8d bc 24 98 00 00 	lea    0x98(%rsp),%rdi
+    58d9:	00 
+    58da:	ba 02 00 00 00       	mov    $0x2,%edx
+    58df:	e8 0c fd ff ff       	callq  55f0 <core::result::Result<T,E>::expect>
+    58e4:	89 94 24 90 00 00 00 	mov    %edx,0x90(%rsp)
+    58eb:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
+    58f2:	00 
+    58f3:	48 8d bc 24 88 00 00 	lea    0x88(%rsp),%rdi
+    58fa:	00 
+    58fb:	e8 c0 03 00 00       	callq  5cc0 <core::time::Duration::as_secs>
+    5900:	48 89 84 24 80 00 00 	mov    %rax,0x80(%rsp)
+    5907:	00 
+    5908:	48 8d 35 41 f5 02 00 	lea    0x2f541(%rip),%rsi        # 34e50 <core::fmt::num::imp::<impl core::fmt::Display for u64>::fmt>
+    590f:	48 8d 84 24 80 00 00 	lea    0x80(%rsp),%rax
+    5916:	00 
+    5917:	48 89 84 24 f0 00 00 	mov    %rax,0xf0(%rsp)
+    591e:	00 
+    591f:	48 8b 84 24 f0 00 00 	mov    0xf0(%rsp),%rax
+    5926:	00 
+    5927:	48 89 84 24 20 01 00 	mov    %rax,0x120(%rsp)
+    592e:	00 
+    592f:	48 89 c7             	mov    %rax,%rdi
+    5932:	e8 a9 00 00 00       	callq  59e0 <core::fmt::ArgumentV1::new>
+    5937:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+    593c:	48 89 54 24 10       	mov    %rdx,0x10(%rsp)
+    5941:	48 8d 05 e8 db 03 00 	lea    0x3dbe8(%rip),%rax        # 43530 <__do_global_dtors_aux_fini_array_entry+0x40>
+    5948:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+    594d:	48 89 8c 24 e0 00 00 	mov    %rcx,0xe0(%rsp)
+    5954:	00 
+    5955:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+    595a:	48 89 94 24 e8 00 00 	mov    %rdx,0xe8(%rsp)
+    5961:	00 
+    5962:	48 8d b4 24 e0 00 00 	lea    0xe0(%rsp),%rsi
+    5969:	00 
+    596a:	48 8d bc 24 b0 00 00 	lea    0xb0(%rsp),%rdi
+    5971:	00 
+    5972:	48 89 74 24 08       	mov    %rsi,0x8(%rsp)
+    5977:	48 89 c6             	mov    %rax,%rsi
+    597a:	ba 02 00 00 00       	mov    $0x2,%edx
+    597f:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+    5984:	41 b8 01 00 00 00    	mov    $0x1,%r8d
+    598a:	e8 c1 f9 ff ff       	callq  5350 <core::fmt::Arguments::new_v1>
+    598f:	48 8d bc 24 b0 00 00 	lea    0xb0(%rsp),%rdi
+    5996:	00 
+    5997:	ff 15 33 00 04 00    	callq  *0x40033(%rip)        # 459d0 <_GLOBAL_OFFSET_TABLE_+0x48>
+    599d:	48 81 c4 28 01 00 00 	add    $0x128,%rsp
+    59a4:	c3                   	retq   
+    59a5:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+    59ac:	00 00 00 
+    59af:	90                   	nop
