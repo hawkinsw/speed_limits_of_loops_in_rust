@@ -35,9 +35,9 @@
     5861:	48 89 44 24 60       	mov    %rax,0x60(%rsp)
     5866:	48 8b 44 24 60       	mov    0x60(%rsp),%rax
     586b:	48 85 c0             	test   %rax,%rax
-# If the next iterator is 0, we jump out of the loop to SECOND_SYSTEMTIME
+# If `next` returned None, we jump out of the loop to SECOND_SYSTEMTIME
     586e:	74 04                	je     5874 <rust_linz::main+0x94>
-# Otherwise, we jump to LABEL2
+# Otherwise, we jump to LOOP_BODY
     5870:	eb 00                	jmp    5872 <rust_linz::main+0x92>
     5872:	eb 17                	jmp    588b <rust_linz::main+0xab>
 

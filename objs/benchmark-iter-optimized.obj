@@ -1,56 +1,69 @@
-0000000000005170 <rust_linz::main>:
-    5170:	41 57                	push   %r15
-    5172:	41 56                	push   %r14
-    5174:	53                   	push   %rbx
-    5175:	48 83 ec 60          	sub    $0x60,%rsp
-    5179:	4c 8d 3d f0 29 01 00 	lea    0x129f0(%rip),%r15        # 17b70 <std::time::SystemTime::now>
-    5180:	41 ff d7             	callq  *%r15
-    5183:	48 89 c3             	mov    %rax,%rbx
-    5186:	49 89 d6             	mov    %rdx,%r14
-    5189:	41 ff d7             	callq  *%r15
-    518c:	48 89 44 24 50       	mov    %rax,0x50(%rsp)
-    5191:	48 89 54 24 58       	mov    %rdx,0x58(%rsp)
-    5196:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
-    519b:	48 8d 74 24 50       	lea    0x50(%rsp),%rsi
-    51a0:	48 89 da             	mov    %rbx,%rdx
-    51a3:	4c 89 f1             	mov    %r14,%rcx
-    51a6:	ff 15 dc 09 04 00    	callq  *0x409dc(%rip)        # 45b88 <_GLOBAL_OFFSET_TABLE_+0x200>
-    51ac:	83 7c 24 20 01       	cmpl   $0x1,0x20(%rsp)
-    51b1:	74 66                	je     5219 <rust_linz::main+0xa9>
-    51b3:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
-    51b8:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
-    51bd:	48 8d 44 24 18       	lea    0x18(%rsp),%rax
-    51c2:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
-    51c7:	48 8d 05 82 f2 02 00 	lea    0x2f282(%rip),%rax        # 34450 <core::fmt::num::imp::<impl core::fmt::Display for u64>::fmt>
-    51ce:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
-    51d3:	48 8d 05 56 e3 03 00 	lea    0x3e356(%rip),%rax        # 43530 <__do_global_dtors_aux_fini_array_entry+0x40>
-    51da:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
-    51df:	48 c7 44 24 28 02 00 	movq   $0x2,0x28(%rsp)
-    51e6:	00 00 
-    51e8:	48 c7 44 24 30 00 00 	movq   $0x0,0x30(%rsp)
-    51ef:	00 00 
-    51f1:	48 8d 44 24 08       	lea    0x8(%rsp),%rax
-    51f6:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
-    51fb:	48 c7 44 24 48 01 00 	movq   $0x1,0x48(%rsp)
-    5202:	00 00 
-    5204:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
-    5209:	ff 15 c1 07 04 00    	callq  *0x407c1(%rip)        # 459d0 <_GLOBAL_OFFSET_TABLE_+0x48>
-    520f:	48 83 c4 60          	add    $0x60,%rsp
-    5213:	5b                   	pop    %rbx
-    5214:	41 5e                	pop    %r14
-    5216:	41 5f                	pop    %r15
-    5218:	c3                   	retq   
-    5219:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
-    521e:	8b 4c 24 30          	mov    0x30(%rsp),%ecx
-    5222:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
-    5227:	89 4c 24 10          	mov    %ecx,0x10(%rsp)
-    522b:	48 8d 3d ce 0d 03 00 	lea    0x30dce(%rip),%rdi        # 36000 <_fini+0xfec>
-    5232:	48 8d 0d bf e2 03 00 	lea    0x3e2bf(%rip),%rcx        # 434f8 <__do_global_dtors_aux_fini_array_entry+0x8>
-    5239:	4c 8d 05 d8 e2 03 00 	lea    0x3e2d8(%rip),%r8        # 43518 <__do_global_dtors_aux_fini_array_entry+0x28>
-    5240:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx
-    5245:	be 02 00 00 00       	mov    $0x2,%esi
-    524a:	ff 15 90 09 04 00    	callq  *0x40990(%rip)        # 45be0 <_GLOBAL_OFFSET_TABLE_+0x258>
-    5250:	0f 0b                	ud2    
-    5252:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
-    5259:	00 00 00 
-    525c:	0f 1f 40 00          	nopl   0x0(%rax)
+00000000000051a0 <rust_linz::main>:
+# Make room on the stack for local variables.
+    51a0:	41 57                	push   %r15
+    51a2:	41 56                	push   %r14
+    51a4:	53                   	push   %rbx
+    51a5:	48 83 ec 60          	sub    $0x60,%rsp
+
+# Call SystemTime::now() once and store the results in registers.
+    51a9:	4c 8d 3d e0 2b 01 00 	lea    0x12be0(%rip),%r15        # 17d90 <std::time::SystemTime::now>
+    51b0:	41 ff d7             	callq  *%r15
+    51b3:	48 89 c3             	mov    %rax,%rbx
+    51b6:	49 89 d6             	mov    %rdx,%r14
+
+# Call SystemTime::now() a second time and store the results in memory.
+    51b9:	41 ff d7             	callq  *%r15
+    51bc:	48 89 44 24 50       	mov    %rax,0x50(%rsp)
+    51c1:	48 89 54 24 58       	mov    %rdx,0x58(%rsp)
+
+# Call duration_since() on the two results.
+    51c6:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
+    51cb:	48 8d 74 24 50       	lea    0x50(%rsp),%rsi
+    51d0:	48 89 da             	mov    %rbx,%rdx
+    51d3:	4c 89 f1             	mov    %r14,%rcx
+# Call expect() on the result of the call to duration_since().
+    51d6:	ff 15 64 08 04 00    	callq  *0x40864(%rip)        # 45a40 <_GLOBAL_OFFSET_TABLE_+0xc8>
+# If expect failed, jump to an error handler (EXPECT_HANDLER).
+    51dc:	83 7c 24 20 01       	cmpl   $0x1,0x20(%rsp)
+    51e1:	74 66                	je     5249 <rust_linz::main+0xa9>
+
+# Otherwise, proceed to display the results to the screen.
+    51e3:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    51e8:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+    51ed:	48 8d 44 24 18       	lea    0x18(%rsp),%rax
+    51f2:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+    51f7:	48 8d 05 32 fc 02 00 	lea    0x2fc32(%rip),%rax        # 34e30 <core::fmt::num::imp::<impl core::fmt::Display for u64>::fmt>
+    51fe:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
+    5203:	48 8d 05 d6 e2 03 00 	lea    0x3e2d6(%rip),%rax        # 434e0 <anon.2712bc8ec9c14315ee8c58e99c323979.0.llvm.5696439534413760421+0x68>
+    520a:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+    520f:	48 c7 44 24 28 02 00 	movq   $0x2,0x28(%rsp)
+    5216:	00 00 
+    5218:	48 c7 44 24 30 00 00 	movq   $0x0,0x30(%rsp)
+    521f:	00 00 
+    5221:	48 8d 44 24 08       	lea    0x8(%rsp),%rax
+    5226:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+    522b:	48 c7 44 24 48 01 00 	movq   $0x1,0x48(%rsp)
+    5232:	00 00 
+    5234:	48 8d 7c 24 20       	lea    0x20(%rsp),%rdi
+    5239:	ff 15 49 09 04 00    	callq  *0x40949(%rip)        # 45b88 <_GLOBAL_OFFSET_TABLE_+0x210>
+    523f:	48 83 c4 60          	add    $0x60,%rsp
+    5243:	5b                   	pop    %rbx
+    5244:	41 5e                	pop    %r14
+    5246:	41 5f                	pop    %r15
+    5248:	c3                   	retq   
+
+# EXPECT_HANDLER: Here is the code that handles the case where the expect fails.
+    5249:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    524e:	8b 4c 24 30          	mov    0x30(%rsp),%ecx
+    5252:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+    5257:	89 4c 24 10          	mov    %ecx,0x10(%rsp)
+    525b:	48 8d 3d 9e 0d 03 00 	lea    0x30d9e(%rip),%rdi        # 36000 <_fini+0x60c>
+    5262:	48 8d 0d 3f e2 03 00 	lea    0x3e23f(%rip),%rcx        # 434a8 <anon.2712bc8ec9c14315ee8c58e99c323979.0.llvm.5696439534413760421+0x30>
+    5269:	4c 8d 05 58 e2 03 00 	lea    0x3e258(%rip),%r8        # 434c8 <anon.2712bc8ec9c14315ee8c58e99c323979.0.llvm.5696439534413760421+0x50>
+    5270:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx
+    5275:	be 02 00 00 00       	mov    $0x2,%esi
+    527a:	ff 15 50 09 04 00    	callq  *0x40950(%rip)        # 45bd0 <_GLOBAL_OFFSET_TABLE_+0x258>
+    5280:	0f 0b                	ud2    
+    5282:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+    5289:	00 00 00 
+    528c:	0f 1f 40 00          	nopl   0x0(%rax)

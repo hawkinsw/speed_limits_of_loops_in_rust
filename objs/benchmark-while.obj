@@ -31,7 +31,6 @@
     53b5:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
     53ba:	eb 2d                	jmp    53e9 <rust_linz::main+0x89>
 
-
 # LOOPBODY: Call the function to time!
     53bc:	e8 8f ff ff ff       	callq  5350 <rust_linz::some_function_to_time>
 
